@@ -7,9 +7,9 @@ In this guide, the Humble distribution of ROS 2 is used, but newer distributions
 
 ## Choosing a workspace directory and cloning `ros2_rust`
 
-A "workspace directory", or just "workspace", is simply a directory of your choosing that contains your `ros2_rust` checkout and potentially other ROS 2 packages. It will also usually be your working directory for building. There is only one limitation: It must not contain the ROS 2 installation, so it can't be `/`, for instance. Note that this has **nothing** to do with a [`cargo` workspace](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html).
+A ROS "workspace directory", or just "workspace", is simply a directory of your choosing that contains your `ros2_rust` checkout and potentially other ROS 2 packages. It will also usually be your working directory for building. There is only one limitation: It must not contain the ROS 2 installation, so it can't be `/`, for instance. Note that this has **nothing** to do with a [`cargo` workspace](https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html).
 
-If you don't have a workspace directory already, simply create an empty directory in a convenient location.
+If you don't have a workspace directory already, simply create an empty directory in a convenient location. Some guides create ROS workspace in `~/ros2_ws/`.
 
 Next, clone `ros2_rust` into it. The rest of this article will assume that you have cloned it into a subdirectory named `src` like this:
 
@@ -25,7 +25,7 @@ git clone https://github.com/ros2-rust/ros2_rust.git src/ros2_rust
 Building `rclrs` requires a standard [ROS 2 installation](https://docs.ros.org/en/humble/Installation.html), and a few extensions.
 These extensions are: `colcon-cargo`, `colcon-ros-cargo`, `cargo-ament-build`. The first two are `colcon` plugins, and the third is a `cargo` plugin.
 
-The `libclang` library is also required for automatically generating FFI bindings with `bindgen`. See the [`bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) on how to install it. As a side note, on Ubuntu the `clang` package is not required, only the `libclang-dev` package.
+The `libclang` library is also required to automatically generate FFI bindings with `bindgen`. See the [`bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install it. As a side note, on Ubuntu the `clang` package is not required, only the `libclang-dev` package.
 
 The `python3-vcstool` package is used in [importing auxiliary repositories](#importing-repositories). It can also be installed through `pip` instead of `apt`.
 
@@ -79,7 +79,7 @@ vcs import src < src/ros2_rust/ros2_rust_humble.repos
 This uses the [`vcs` tool](https://github.com/dirk-thomas/vcstool), which is preinstalled in the Docker image.
 
 The new repositories are now in `src/ros2`.
-The list of needed repositories should very rarely change, so you typically only need to do this once.
+The list of needed repositories should rarely change, so you typically only need to do this once.
 
 
 ### Sourcing the ROS 2 installation
@@ -113,7 +113,13 @@ without errors and see a line like this in the output:
 rclrs   src/ros2_rust/rclrs   (ament_cargo)
 ```
 
-The build type `ament_cargo` means that the `colcon-ros-cargo` plugin works as expected.
+NOTE: If you receive an error that colcon does not recognize the subcommand `list`, try the following pip install:
+
+```
+pip install colcon-common-extensions
+```
+
+The build type `ament_cargo` means the `colcon-ros-cargo` plugin works as expected.
 
 
 ## Building with `colcon`
@@ -127,7 +133,7 @@ colcon build --packages-up-to $YOUR_PACKAGE
 
 where `$YOUR_PACKAGE` could be e.g. `examples_rclrs_minimal_pub_sub`. See `colcon build --help` for a complete list of options.
 
-It's normal to see a `Some selected packages are already built in one or more underlay workspace` warning. This is because the standard message definitions that are part of ROS 2 need to be regenerated in order to create Rust bindings. If and when `ros2_rust` becomes an officially supported client library, this issue will disappear.
+It's normal to see a `Some selected packages are already built in one or more underlay workspace` warning. This is because the standard message definitions that are part of ROS 2 need to be regenerated to create Rust bindings. If and when `ros2_rust` becomes an officially supported client library, this issue will disappear.
 
 In addition to the standard `build`, `install` and `log` directories, `colcon` will have created a `.cargo/config.toml` file.
 
