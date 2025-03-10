@@ -26,7 +26,7 @@ The current set of features include:
 - Tunable QoS settings
 - Clients and services
 
-Lots of things are still missing however, see the [issue list](https://github.com/ros2-rust/ros2_rust/issues) for an overview. You are very welcome to [contribute](docs/CONTRIBUTING.md)!
+Lots of things are still missing, however, see the [issue list](https://github.com/ros2-rust/ros2_rust/issues) for an overview. You are very welcome to [contribute](docs/CONTRIBUTING.md)!
 
 Since the client library is still rapidly evolving, there are no stability guarantees for the moment.
 
